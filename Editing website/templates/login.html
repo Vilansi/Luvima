@@ -1,0 +1,468 @@
+<!-- <!DOCTYPE html>
+<html>
+<head><title>Login</title></head>
+<body>
+
+{% if request.args.get('message') == 'logged_out' %}
+<script>
+    alert("You have been logged out successfully!");
+</script>
+{% endif %}
+
+<h2>Login</h2>
+<form method="post">
+  Username: <input name="username" required><br>
+  Password: <input name="password" type="password" required><br>
+  <button type="submit">Login</button>
+</form>
+<p>Don't have an account? <a href="/register">Register here</a></p>
+
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Welcome Back</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated background elements */
+        .bg-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .alert {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9em;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 18px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .password-toggle:hover {
+            color: #667eea;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .password-toggle.active {
+            color: #667eea;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .login-btn:hover::before {
+            left: 100%;
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+            color: #999;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e1e5e9;
+        }
+
+        .divider span {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0 20px;
+            font-size: 0.9em;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .register-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .register-link a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .features {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e5e9;
+        }
+
+        .feature {
+            text-align: center;
+            flex: 1;
+            padding: 0 10px;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .feature-text {
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+            
+            .logo h1 {
+                font-size: 2em;
+            }
+            
+            .features {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="login-container">
+        <div class="logo">
+            <h1>Welcome</h1>
+            <p>Sign in to your account</p>
+        </div>
+
+        <div id="alert" class="alert" style="display: none;">
+            You have been logged out successfully!
+        </div>
+
+        <form method="post" id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <div class="input-wrapper">
+                    <input type="text" id="username" name="username" required>
+                    <div class="input-icon">👤</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <input type="password" id="password" name="password" required>
+                    <div class="password-toggle" id="passwordToggle" onclick="togglePassword()">👁️</div>
+                </div>
+            </div>
+
+            <button type="submit" class="login-btn">
+                Sign In
+            </button>
+        </form>
+
+        <div class="divider">
+            <span>or</span>
+        </div>
+
+        <div class="register-link">
+            <p>Don't have an account? <a href="/register">Create one here</a></p>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🔐</div>
+                <div class="feature-text">Secure</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-text">Fast</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📱</div>
+                <div class="feature-text">Mobile</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Password visibility toggle function
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const passwordToggle = document.getElementById('passwordToggle');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordToggle.textContent = '🙈';
+                passwordToggle.classList.add('active');
+            } else {
+                passwordInput.type = 'password';
+                passwordToggle.textContent = '👁️';
+                passwordToggle.classList.remove('active');
+            }
+        }
+
+        // Check for logout message in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('message') === 'logged_out') {
+            document.getElementById('alert').style.display = 'block';
+            // Auto-hide alert after 5 seconds
+            setTimeout(() => {
+                document.getElementById('alert').style.display = 'none';
+            }, 5000);
+        }
+
+        // Add form submission animation
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            const button = document.querySelector('.login-btn');
+            button.style.transform = 'scale(0.98)';
+            button.textContent = 'Signing in...';
+            
+            // Reset button after a short delay (for demo purposes)
+            setTimeout(() => {
+                button.style.transform = 'scale(1)';
+                button.textContent = 'Sign In';
+            }, 1000);
+        });
+
+        // Add input focus animations
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-2px)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
